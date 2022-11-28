@@ -1,20 +1,21 @@
 import utilities.GDV5;
-import Elements.*;
+import elements.Brick;
+import java.awt.Graphics2D;
 
 public class Breakout extends GDV5
 {
-    private Brick[] bricks;
+    Brick[] bricks;
 
     public Breakout()
     {
-        super();
-        this.bircks = Brick.makeBricks();
+        // super();
+        bricks = Brick.makeBricks();
     }
 
     public static void main(String[] args)
     {
-        Breakout b = new Breakout();
-        b.start();
+        Breakout game = new Breakout();
+        game.start();
     }
 
     @Override
@@ -24,7 +25,7 @@ public class Breakout extends GDV5
     }
 
     @Override
-    public void draw()
+    public void draw(Graphics2D win)
     {
         for (Brick b:bricks)
         {
