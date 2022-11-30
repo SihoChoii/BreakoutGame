@@ -4,12 +4,22 @@ import java.awt.Graphics2D;
 
 public class Breakout extends GDV5
 {
-    Brick[] bricks;
+    Brick[][] brickGrid;
 
     public Breakout()
     {
         // super();
-        bricks = Brick.makeBricks();
+        // Number of Cols and Rows should be set by method
+        // This method should take in the brick size and border size and calculate
+        // the number of bricks that can fit within the specified boreder size
+        // The method will return a struct that contains the padding, cols, and rows
+        // This method will be contained in the brick java file
+        // This system should also be dynamic, meaning that it should be reactive to changes
+        // This is needed for the dynamic border sizing
+        // The bricks should also be cetnered on the border
+        // The border position and size in defined by aboslute pixel position 
+        
+        brickGrid = Brick.makeBricks(11,10);
     }
 
     public static void main(String[] args)
@@ -27,9 +37,14 @@ public class Breakout extends GDV5
     @Override
     public void draw(Graphics2D win)
     {
-        for (Brick b:bricks)
+        // brickGrid.length = cols
+        for (int i = 0; i < brickGrid.length; i++)
         {
-            b.draw(win);
+            // brickGrid[i].length = rows
+            for (int o = 0; o < brickGrid[i].length; o++)
+            {
+                brickGrid[i][o].draw(win);
+            }
         }
     }
 }

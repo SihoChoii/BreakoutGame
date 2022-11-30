@@ -25,23 +25,25 @@ public class Brick extends Rectangle
         win.draw(this);
     }
 
-    public static Brick[] makeBricks()
+    public static Brick[][] makeBricks(int cols, int rows)
     {
-        int rows = 1;
         int x = 10, y = 10;
-        int cols = 8;
+        int paddingX = 10, paddingY = 10;
         int numBricks = rows * cols;
 
-        Brick[] b = new Brick[cols];
+        Brick[][] brickGrid = new Brick[cols][rows];
         for (int o = 0; o < rows; o++)
         {
-            for (int i = 0; i < b.length; i++)
+            for (int i = 0; i < brickGrid.length; i++)
             {
-                b[i] = new Brick(x, y, Color.green);
-                x += w + 10;
+                brickGrid[i][o] = new Brick(x, y, Color.green);
+                x += w + paddingX;
+                System.out.println("X: " + x);
             }
-            y -= h + 10;
+            x = 10;
+            y += h + paddingY;
+            System.out.println("Y: " + y);
         }
-        return b;
+        return brickGrid;
     }
 }
