@@ -1,6 +1,5 @@
 package elements;
 
-import utilities.GDV5;
 import java.awt.Rectangle;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -10,13 +9,12 @@ public class Brick extends Rectangle
 {
     private Color brickColor;
     private int type = 1; // Default brick type
-    private static int w = 60;
-    private static int h = 20;
+    // private static int brickRatio = 3; // Default brick ratio
 
-    public Brick(int x, int y)
+    public Brick(int xPosition, int yPosition, int width, int height)
     {  
-        super(x, y, w, h); // Rectangle Creation
-        this.type = typeGen(1000);
+        super(xPosition, yPosition, width, height); // Rectangle Creation
+        this.type = typeGen(10000);
         System.out.println(this.type);
         this.brickColor = colorGen(this.type);
     }
@@ -38,10 +36,10 @@ public class Brick extends Rectangle
         int randomNum = rand.nextInt(grain) + 1;
 
         // Dirty implementation of probability
-        if (randomNum <= grain * 0.7) return 1;
-        else if (randomNum <= grain * 0.8) return 2;
-        else if (randomNum <= grain * 0.9) return 3;
-        else if (randomNum <= grain * 0.95) return 4;
+        if (randomNum <= grain * 0.75) return 1;
+        else if (randomNum <= grain * 0.9) return 2;
+        else if (randomNum <= grain * 0.95) return 3;
+        else if (randomNum <= grain * 0.98) return 4;
         return 5;
     }
 
@@ -53,22 +51,27 @@ public class Brick extends Rectangle
         win.draw(this);
     }
 
-    public static Brick[][] makeBricks(int cols, int rows)
+    public static Brick[][] makeBricks(int cols, int rows, int brickX, int brickY, int borderX, int borderY)
     {
-        int x = 10, y = 10;
-        int paddingX = 10, paddingY = 10;
-        int numBricks = rows * cols;
+        borderX -= brickX * 2;
+        borderY -= brickY * 2;
+        int xPosition = brickX, yPosition = brickY;
+        int paddingX = (borderX / cols) / 8;
+        int paddingY = (borderY / rows) / 5;
+        int brickWidth = (borderX / cols) - ((paddingX*(cols-1))/cols);
+        int brickHeight = (borderY / rows) - ((paddingY*(rows-1))/rows);
+        // int brickHeight = brickWidth/brickRatio;
 
         Brick[][] brickGrid = new Brick[cols][rows];
         for (int o = 0; o < rows; o++)
         {
             for (int i = 0; i < brickGrid.length; i++)
             {
-                brickGrid[i][o] = new Brick(x, y);
-                x += w + paddingX;
+                brickGrid[i][o] = new Brick(xPosition, yPosition, brickWidth, brickHeight);
+                xPosition += brickWidth + paddingX;
             }
-            x = 10;
-            y += h + paddingY;
+            xPosition = brickX;
+            yPosition += brickHeight + paddingY;
         }
         return brickGrid;
     }

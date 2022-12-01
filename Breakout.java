@@ -1,3 +1,8 @@
+// Dynamic Breakout Game
+// By: Siho Choi
+// Date: 12/1/2022
+// Version: 1.0.2
+
 import utilities.GDV5;
 import elements.Brick;
 import java.awt.Graphics2D;
@@ -8,18 +13,8 @@ public class Breakout extends GDV5
 
     public Breakout()
     {
-        // super();
-        // Number of Cols and Rows should be set by method
-        // This method should take in the brick size and border size and calculate
-        // the number of bricks that can fit within the specified boreder size
-        // The method will return a struct that contains the padding, cols, and rows
-        // This method will be contained in the brick java file
-        // This system should also be dynamic, meaning that it should be reactive to changes
-        // This is needed for the dynamic border sizing
-        // The bricks should also be cetnered on the border
-        // The border position and size in defined by aboslute pixel position 
-        
-        brickGrid = Brick.makeBricks(11,10);
+        // super();        
+        brickGrid = Brick.makeBricks(12,5, 50, 50, GDV5.getMaxWindowX(), GDV5.getMaxWindowY()/3);
     }
 
     public static void main(String[] args)
