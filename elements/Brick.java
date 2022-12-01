@@ -9,18 +9,35 @@ public class Brick extends Rectangle
 {
     private Color brickColor;
     private int type = 1; // Default brick type
+    private boolean isVisible = true;
     // private static int brickRatio = 3; // Default brick ratio
+
+    private static int type1Bricks = 0;
+    private static int type2Bricks = 0;
+    private static int type3Bricks = 0;
+    private static int type4Bricks = 0;
+    private static int type5Bricks = 0;
 
     public Brick(int xPosition, int yPosition, int width, int height)
     {  
         super(xPosition, yPosition, width, height); // Rectangle Creation
         this.type = typeGen(10000);
-        System.out.println(this.type);
         this.brickColor = colorGen(this.type);
+    }
+    
+    public void draw(Graphics2D win)
+    {
+        if (isVisible)
+        {
+            win.setColor(brickColor);
+            win.fill(this);
+            win.setColor(Color.white);
+            win.draw(this);
+        }
     }
 
     // Picks a color based on the brick type
-    public Color colorGen(int type)
+    public static Color colorGen(int type)
     {
         if (type == 2) return Color.red;
         else if (type == 3) return Color.blue;
@@ -30,31 +47,43 @@ public class Brick extends Rectangle
     }
 
     // Generates a brick type based on specified probability
-    public int typeGen(int grain)
+    public static int typeGen(int grain)
     {
         Random rand = new Random();
         int randomNum = rand.nextInt(grain) + 1;
 
         // Dirty implementation of probability
-        if (randomNum <= grain * 0.75) return 1;
-        else if (randomNum <= grain * 0.9) return 2;
-        else if (randomNum <= grain * 0.95) return 3;
-        else if (randomNum <= grain * 0.98) return 4;
-        return 5;
-    }
-
-    public void draw(Graphics2D win)
-    {
-        win.setColor(brickColor);
-        win.fill(this);
-        win.setColor(Color.white);
-        win.draw(this);
+        if (randomNum <= grain * 0.75) 
+        {
+            type1Bricks++;
+            return 1;
+        }
+        else if (randomNum <= grain * 0.9) 
+        {
+            type2Bricks++;
+            return 2;
+        }
+        else if (randomNum <= grain * 0.95) 
+        {
+            type3Bricks++;
+            return 3;
+        }
+        else if (randomNum <= grain * 0.98) 
+        {
+            type4Bricks++;
+            return 4;
+        }
+        else 
+        {
+            type5Bricks++;
+            return 5;
+        }
     }
 
     public static Brick[][] makeBricks(int cols, int rows, int brickX, int brickY, int borderX, int borderY)
     {
-        borderX -= brickX * 2;
-        borderY -= brickY * 2;
+        borderX -= brickX * 2; // X Centering
+        borderY -= brickY * 2; // Y Centering
         int xPosition = brickX, yPosition = brickY;
         int paddingX = (borderX / cols) / 8;
         int paddingY = (borderY / rows) / 5;
@@ -73,6 +102,14 @@ public class Brick extends Rectangle
             xPosition = brickX;
             yPosition += brickHeight + paddingY;
         }
+
+        System.out.println("Brick Distribution  |  Total Bricks: " + rows*cols);
+        System.out.println("Type 1: " + type1Bricks);
+        System.out.println("Type 2: " + type2Bricks);
+        System.out.println("Type 3: " + type3Bricks);
+        System.out.println("Type 4: " + type4Bricks);
+        System.out.println("Type 5: " + type5Bricks);
+
         return brickGrid;
     }
 }

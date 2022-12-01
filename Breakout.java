@@ -14,7 +14,7 @@ public class Breakout extends GDV5
     public Breakout()
     {
         // super();        
-        brickGrid = Brick.makeBricks(12,5, 50, 50, GDV5.getMaxWindowX(), GDV5.getMaxWindowY()/3);
+        brickGrid = Brick.makeBricks(14,12, 30, 20, GDV5.getMaxWindowX(), (int)(GDV5.getMaxWindowY()/2.5));
     }
 
     public static void main(String[] args)
@@ -26,7 +26,7 @@ public class Breakout extends GDV5
     @Override
     public void update()
     {
-
+        
     }
 
     @Override
