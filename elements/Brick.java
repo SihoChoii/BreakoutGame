@@ -36,6 +36,19 @@ public class Brick extends Rectangle
         }
     }
 
+    public static void drawBirckGrid(Brick[][] brickGrid, Graphics2D win)
+    {
+        // brickGrid.length = cols
+        for (int i = 0; i < brickGrid.length; i++)
+        {
+            // brickGrid[i].length = rows
+            for (int o = 0; o < brickGrid[i].length; o++)
+            {
+                brickGrid[i][o].draw(win);
+            }
+        }
+    }
+
     // Picks a color based on the brick type
     public static Color colorGen(int type)
     {
