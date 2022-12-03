@@ -1,7 +1,7 @@
 // Dynamic Breakout Game
 // By: Siho Choi
-// Date: 12/1/2022
-// Version: 1.0.31
+// Date: 12/2/2022
+// Version: 1.0.4
 
 import utilities.GDV5;
 import elements.Brick;

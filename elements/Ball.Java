@@ -1,0 +1,32 @@
+import java.awt.Rectangle;
+import java.awt.Graphics2D;
+
+public class Ball extends Rectangle
+{
+    private boolean isVisible = true;
+    private int type = 1; // Default Type - Ball type is defined by the brick type the ball touches
+
+    public Ball(int xPosition, int yPosition, int size)
+    {
+        super(xPosition, yPosition, size, size);
+    }
+
+    public void draw(Graphics2D win)
+    {
+        if (isVisible)
+        {
+            win.setColor(brickColor);
+            win.drawOval((int)this.getX(), (int)this.getY(), (int)this.getWidth(), (int)this.getHeight());
+        }
+    }
+
+    public void move(int xVelocity, int yVelocity)
+    {
+        setLocation((int)this.getX + xVelocity, (int)this.getY + yVelocity);
+    }
+
+    public void update()
+    {
+        this.move(xVelocity, yVelocity);
+    }
+}
