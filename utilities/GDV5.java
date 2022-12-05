@@ -206,6 +206,26 @@ public abstract class GDV5 extends Canvas implements Runnable, KeyListener {
 
 	}
 
+	// Top and bottom are odd, right and left are even
+	public static int collisionDirectionWindow(Rectangle projectile)
+	{
+		if (projectile.getY() + projectile.getHeight() <= 0 + getPadding())
+		{
+			return 1; // Top
+		} else if (projectile.getX() + projectile.getWidth() >= getMaxWindowX() - getPadding())
+		{
+			return 2; // Righht
+		} else if (projectile.getX() <= 0)
+		{
+			return 4; // Left
+		} else if (projectile.getY() >= getMaxWindowY() - getPadding())
+		{
+			return 3; // Bottom
+		}
+
+		return 0; // No Collision
+	}
+
 	public String getTitle() {
 		return title;
 	}

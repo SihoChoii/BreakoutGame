@@ -29,11 +29,22 @@ public class Brick extends Rectangle
     {
         if (isVisible)
         {
-            win.setColor(brickColor);
-            win.fill(this);
+            // CHANGE The default white color should be replaced by a color gradient
             win.setColor(Color.white);
+            win.fill(this);
+            win.setColor(brickColor);
             win.draw(this);
         }
+    }
+
+    public boolean isVisibleGet()
+    {
+        return isVisible;
+    }
+
+    public void isVisibleSet(boolean value)
+    {
+        this.isVisible = value;
     }
 
     public static void drawBirckGrid(Brick[][] brickGrid, Graphics2D win)
@@ -44,7 +55,7 @@ public class Brick extends Rectangle
             // brickGrid[i].length = rows
             for (int o = 0; o < brickGrid[i].length; o++)
             {
-                brickGrid[i][o].draw(win);
+                if (brickGrid[i][o].isVisibleGet()) brickGrid[i][o].draw(win);;
             }
         }
     }
@@ -55,7 +66,7 @@ public class Brick extends Rectangle
         if (type == 2) return Color.red;
         else if (type == 3) return Color.blue;
         else if (type == 4) return Color.green;
-        else if (type == 5) return Color.yellow;
+        else if (type == 5) return Color.yellow; // CHANGE to rgb sweep
         return Color.blue; // Default
     }
 
