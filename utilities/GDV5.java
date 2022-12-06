@@ -34,13 +34,15 @@ public abstract class GDV5 extends Canvas implements Runnable, KeyListener {
 	public static boolean[] KeysPressed;
 	private static int MAX_WINDOW_X = 800;
 	private static int MAX_WINDOW_Y = 1000;
-	private static int PADDING = 2;
+	private static int PADDING = 10;
 
 	// it is your responsibility to handle the release on keysTyped
 	public static boolean[] KeysTyped;
 	private JFrame frame;
 	private String title = "Pog";
 	private boolean cleanCanvas = true;
+
+	private static boolean debugMessage = true;
 
 	public GDV5(int frames) {
 		// set up all variables related to the game
@@ -56,7 +58,7 @@ public abstract class GDV5 extends Canvas implements Runnable, KeyListener {
 
 	public GDV5() {
 		// default setting (60 frames per second)
-		this(60);
+		this(120);
 
 		this.setBackground(Color.BLACK);
 	}
@@ -207,23 +209,32 @@ public abstract class GDV5 extends Canvas implements Runnable, KeyListener {
 	}
 
 	// Top and bottom are odd, right and left are even
-	public static int collisionDirectionWindow(Rectangle projectile)
+	public static int collisionDirectionWindow(Rectangle projectile, int xVelocity, int yVelocity)
 	{
-		if (projectile.getY() + projectile.getHeight() <= 0 + getPadding())
+		if (projectile.getY() + projectile.getHeight() <= 0 + getPadding()*1.5)
 		{
-			return 1; // Top
+			GDV5.printDebug("Top");
+			return 3; // Top
 		} else if (projectile.getX() + projectile.getWidth() >= getMaxWindowX() - getPadding())
 		{
-			return 2; // Righht
+			GDV5.printDebug("Right");
+			return 2; // Right
 		} else if (projectile.getX() <= 0)
 		{
+			GDV5.printDebug("Left");
 			return 4; // Left
-		} else if (projectile.getY() >= getMaxWindowY() - getPadding())
+		} else if (projectile.getY() >= getMaxWindowY() - getPadding()*1.5)
 		{
-			return 3; // Bottom
+			GDV5.printDebug("Bottom");
+			return 5; // Bottom
 		}
-
+		// GDV5.printDebug("No Collision");
 		return 0; // No Collision
+	}
+
+	// Debug Messages
+	public static void printDebug(String message) {
+		if (debugMessage) System.out.println(message);
 	}
 
 	public String getTitle() {
@@ -268,6 +279,10 @@ public abstract class GDV5 extends Canvas implements Runnable, KeyListener {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static void setDebugMessage(boolean option) {
+		debugMessage = option;
 	}
 }
 

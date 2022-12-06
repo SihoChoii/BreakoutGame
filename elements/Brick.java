@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Random;
 
+import utilities.GDV5;
+
 public class Brick extends Rectangle
 {
     private Color brickColor;
@@ -29,10 +31,10 @@ public class Brick extends Rectangle
     {
         if (isVisible)
         {
+            win.setColor(brickColor);
+            win.fill(this);
             // CHANGE The default white color should be replaced by a color gradient
             win.setColor(Color.white);
-            win.fill(this);
-            win.setColor(brickColor);
             win.draw(this);
         }
     }
@@ -121,18 +123,21 @@ public class Brick extends Rectangle
             for (int i = 0; i < brickGrid.length; i++)
             {
                 brickGrid[i][o] = new Brick(xPosition, yPosition, brickWidth, brickHeight);
+                GDV5.printDebug("Row [" + o + "] Col [" + i + "]  |  X: " + xPosition + "  Y: " + yPosition);
                 xPosition += brickWidth + paddingX;
             }
             xPosition = brickX;
             yPosition += brickHeight + paddingY;
         }
 
-        System.out.println("Brick Distribution  |  Total Bricks: " + rows*cols);
-        System.out.println("Type 1: " + type1Bricks);
-        System.out.println("Type 2: " + type2Bricks);
-        System.out.println("Type 3: " + type3Bricks);
-        System.out.println("Type 4: " + type4Bricks);
-        System.out.println("Type 5: " + type5Bricks);
+        // Debug
+        GDV5.printDebug("Brick Distribution  |  Total Bricks: " + rows*cols);
+        GDV5.printDebug("Type 1: " + type1Bricks);
+        GDV5.printDebug("Type 2: " + type2Bricks);
+        GDV5.printDebug("Type 3: " + type3Bricks);
+        GDV5.printDebug("Type 4: " + type4Bricks);
+        GDV5.printDebug("Type 5: " + type5Bricks);
+
 
         return brickGrid;
     }
