@@ -190,40 +190,47 @@ public abstract class GDV5 extends Canvas implements Runnable, KeyListener {
 		int previousYPos = (int) projectile.getY() - dy;
 		int height = (int) projectile.getHeight();
 		int width = (int) projectile.getWidth();
-		int result = 0; // default intersects from right
 
-		if (previousYPos + height <= stationary.getY() && projectile.getMaxY() >= stationary.getY()) {
-			// intersects from top
-			result = 1;
-		} else if (previousXPos + width <= stationary.getX() && projectile.getX() + width >= stationary.getX()) {
-			// intersects from left
-			result = 2;
-		} else if (previousYPos >= stationary.getY() + stationary.height
-				&& projectile.getY() <= stationary.getY() + stationary.height) {
-			// intersects from bottom
-			result = 3;
+		if (previousYPos + height <= stationary.getY() && projectile.getMaxY() >= stationary.getY()) 
+		{
+			return 3; // top
+		}
+		else if (previousYPos >= stationary.getY() + stationary.height
+				&& projectile.getY() <= stationary.getY() + stationary.height) 
+		{
+			return 5; // bottom
 		}
 
-		return result;
+		if (previousXPos <= stationary.getX() + width && projectile.getX() <= stationary.getX() + width )
+		{
+			return 4; // right
+		}
+		else if (previousXPos + width <= stationary.getX() && projectile.getX() + width >= stationary.getX()) 
+		{
+			return 2; // left
+		}
+		
+
+		return 0;
 
 	}
 
 	// Top and bottom are odd, right and left are even
-	public static int collisionDirectionWindow(Rectangle projectile, int xVelocity, int yVelocity)
+	public static int collisionDirectionWindow(Rectangle projectile, int borderX, int borderY, int xVelocity, int yVelocity)
 	{
-		if (projectile.getY() + projectile.getHeight() <= 0 + getPadding()*1.5)
+		if (projectile.getY() + projectile.getHeight() <= 0 + getPadding()*2)
 		{
 			GDV5.printDebug("Top");
 			return 3; // Top
-		} else if (projectile.getX() + projectile.getWidth() >= getMaxWindowX() - getPadding())
+		} else if (projectile.getX() + projectile.getWidth() >= borderX - getPadding())
 		{
 			GDV5.printDebug("Right");
 			return 2; // Right
-		} else if (projectile.getX() <= 0)
+		} else if (projectile.getX() <= 0 + getPadding())
 		{
 			GDV5.printDebug("Left");
 			return 4; // Left
-		} else if (projectile.getY() >= getMaxWindowY() - getPadding()*1.5)
+		} else if (projectile.getY() >= borderY - getPadding()*2)
 		{
 			GDV5.printDebug("Bottom");
 			return 5; // Bottom

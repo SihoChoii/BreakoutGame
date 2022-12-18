@@ -1,9 +1,11 @@
 package elements;
 
 import java.awt.Rectangle;
+import java.awt.Stroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Random;
+import java.awt.BasicStroke;
 
 import utilities.GDV5;
 
@@ -12,6 +14,7 @@ public class Brick extends Rectangle
     private Color brickColor;
     private int type = 1; // Default brick type
     private boolean isVisible = true;
+    private int brickWidth, brickHeight;
     // private static int brickRatio = 3; // Default brick ratio
 
     private static int type1Bricks = 0;
@@ -25,17 +28,22 @@ public class Brick extends Rectangle
         super(xPosition, yPosition, width, height); // Rectangle Creation
         this.type = typeGen(10000);
         this.brickColor = colorGen(this.type);
+        this.brickHeight = height;
+        this.brickWidth = width;
     }
     
     public void draw(Graphics2D win)
     {
         if (isVisible)
         {
-            win.setColor(brickColor);
+            Stroke prevStroke = win.getStroke();
+            win.setColor(Color.white);
             win.fill(this);
             // CHANGE The default white color should be replaced by a color gradient
-            win.setColor(Color.white);
+            win.setStroke(new BasicStroke(this.brickWidth/20));
+            win.setColor(brickColor);
             win.draw(this);
+            win.setStroke(prevStroke); // Reset Stroke
         }
     }
 
@@ -47,6 +55,28 @@ public class Brick extends Rectangle
     public void isVisibleSet(boolean value)
     {
         this.isVisible = value;
+    }
+
+    public boolean breakBrick()
+    {
+        if (this.breakParticle() && this.fade())
+        {
+            isVisible = false;
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean breakParticle()
+    {
+        GDV5.printDebug("Breaking");
+        return true;
+    }
+
+    public boolean fade()
+    {
+        GDV5.printDebug("Fading");
+        return true;
     }
 
     public static void drawBirckGrid(Brick[][] brickGrid, Graphics2D win)
@@ -112,7 +142,7 @@ public class Brick extends Rectangle
         borderY -= brickY * 2; // Y Centering
         int xPosition = brickX, yPosition = brickY;
         int paddingX = (borderX / cols) / 8;
-        int paddingY = (borderY / rows) / 5;
+        int paddingY = (borderY / rows) / 3;
         int brickWidth = (borderX / cols) - ((paddingX*(cols-1))/cols);
         int brickHeight = (borderY / rows) - ((paddingY*(rows-1))/rows);
         // int brickHeight = brickWidth/brickRatio;
@@ -138,7 +168,22 @@ public class Brick extends Rectangle
         GDV5.printDebug("Type 4: " + type4Bricks);
         GDV5.printDebug("Type 5: " + type5Bricks);
 
-
         return brickGrid;
     }
+
+        // Block Animations
+        public boolean fadeAway()
+        {
+            if (brickColor.getAlpha() >= 0)
+            {
+                brickColor = new Color((float) brickColor.getRed(), (float) brickColor.getGreen(), (float) brickColor.getBlue(), (float) (brickColor.getAlpha() - 0.1));
+                return false;
+            }
+            return true;
+        }
+
+        public boolean deathAnim()
+        {
+            return true;
+        }
 }
