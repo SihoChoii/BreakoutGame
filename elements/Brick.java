@@ -6,6 +6,9 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Random;
 import java.awt.BasicStroke;
+import elements.Score;
+import java.lang.Math;
+import elements.Particle;
 
 import utilities.GDV5;
 
@@ -15,6 +18,8 @@ public class Brick extends Rectangle
     private int type = 1; // Default brick type
     private boolean isVisible = true;
     private int brickWidth, brickHeight;
+    private int count = 0;
+    private boolean breakState = false;
     // private static int brickRatio = 3; // Default brick ratio
 
     private static int type1Bricks = 0;
@@ -37,19 +42,42 @@ public class Brick extends Rectangle
         if (isVisible)
         {
             Stroke prevStroke = win.getStroke();
-            win.setColor(Color.white);
+            win.setColor(new Color(brickColor.getRed()/3, brickColor.getGreen()/3, brickColor.getBlue()/3));
             win.fill(this);
             // CHANGE The default white color should be replaced by a color gradient
             win.setStroke(new BasicStroke(this.brickWidth/20));
             win.setColor(brickColor);
             win.draw(this);
             win.setStroke(prevStroke); // Reset Stroke
+
+            if (breakState)
+            {
+                for (int i = 0; i < Particle.getParticleArray().length; i++)
+                {
+                    Particle.getParticleArray()[i].draw(win);
+                }
+            }
         }
+    }
+
+    public int getType()
+    {
+        return this.type;
     }
 
     public boolean isVisibleGet()
     {
         return isVisible;
+    }
+
+    public Color getColor()
+    {
+        return this.brickColor; 
+    }
+
+    public void setColor(Color color)
+    {
+        this.brickColor = color;
     }
 
     public void isVisibleSet(boolean value)
@@ -62,6 +90,9 @@ public class Brick extends Rectangle
         if (this.breakParticle() && this.fade())
         {
             isVisible = false;
+            Score.setScore(Score.getScore() + (int)Math.pow(this.type, 3));
+            GDV5.printDebug("Score: " + Score.getScore());
+            breakState = false;
             return true;
         }
         return false;
@@ -69,14 +100,36 @@ public class Brick extends Rectangle
     
     public boolean breakParticle()
     {
-        GDV5.printDebug("Breaking");
+        // GDV5.printDebug("Breaking");
+        if (breakState != true)
+        {
+            breakState = true;
+            Particle.makeParticleArray(this);
+        }
+        else
+        {
+            if (Particle.moveParticles()) return true;
+        }
         return true;
     }
 
     public boolean fade()
     {
-        GDV5.printDebug("Fading");
-        return true;
+        if (count % 2 == 0)
+        {
+            if (brickColor.getAlpha() > 10)
+            {
+                // GDV5.printDebug("Fading");
+                brickColor = new Color(brickColor.getRed(), brickColor.getGreen(), brickColor.getBlue(), brickColor.getAlpha() - 10);
+            }
+            else if (brickColor.getAlpha() <= 10)
+            {
+                return true;
+            }
+            count = 0;
+        }
+        count++;
+        return false;
     }
 
     public static void drawBirckGrid(Brick[][] brickGrid, Graphics2D win)
@@ -96,7 +149,7 @@ public class Brick extends Rectangle
     public static Color colorGen(int type)
     {
         if (type == 2) return Color.red;
-        else if (type == 3) return Color.blue;
+        else if (type == 3) return Color.orange;
         else if (type == 4) return Color.green;
         else if (type == 5) return Color.yellow; // CHANGE to rgb sweep
         return Color.blue; // Default

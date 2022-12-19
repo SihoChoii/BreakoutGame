@@ -193,7 +193,7 @@ public abstract class GDV5 extends Canvas implements Runnable, KeyListener {
 
 		if (previousYPos + height <= stationary.getY() && projectile.getMaxY() >= stationary.getY()) 
 		{
-			return 3; // top
+			return 7; // top
 		}
 		else if (previousYPos >= stationary.getY() + stationary.height
 				&& projectile.getY() <= stationary.getY() + stationary.height) 
@@ -220,19 +220,19 @@ public abstract class GDV5 extends Canvas implements Runnable, KeyListener {
 	{
 		if (projectile.getY() + projectile.getHeight() <= 0 + getPadding()*2)
 		{
-			GDV5.printDebug("Top");
+			// GDV5.printDebug("Top");
 			return 3; // Top
 		} else if (projectile.getX() + projectile.getWidth() >= borderX - getPadding())
 		{
-			GDV5.printDebug("Right");
+			// GDV5.printDebug("Right");
 			return 2; // Right
 		} else if (projectile.getX() <= 0 + getPadding())
 		{
-			GDV5.printDebug("Left");
+			// GDV5.printDebug("Left");
 			return 4; // Left
 		} else if (projectile.getY() >= borderY - getPadding()*2)
 		{
-			GDV5.printDebug("Bottom");
+			// GDV5.printDebug("Bottom");
 			return 5; // Bottom
 		}
 		// GDV5.printDebug("No Collision");

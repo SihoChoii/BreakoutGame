@@ -7,12 +7,13 @@ import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.Stroke;
 import java.awt.BasicStroke;
+import java.lang.Math;
 
 public class Paddle extends Rectangle
 {
     private boolean isVisible = true;
     private int type = 1; // Default Type - Paddle type is defined by the brick type the paddle touches
-    private Color paddleColor = Color.RED;
+    private Color paddleColor = Color.black;
     private int size;
 
     public Paddle(int xPosition, int yPosition, int size)
@@ -41,21 +42,34 @@ public class Paddle extends Rectangle
         this.setLocation((int)this.getX() + xVelocity, (int)this.getY() + yVelocity);
     }
 
-    private int xVelocity = 3, yVelocity = 0; // CHANGE static implementation
+    private int xVelocityD = 4, yVelocityD = 0; // Defaults
+    private int xVelocity = xVelocityD, yVelocity = yVelocityD; // Current
     public void update()
     {
         int collisionDirectionWindow = GDV5.collisionDirectionWindow(this, GDV5.getMaxWindowX(), GDV5.getMaxWindowY(), xVelocity, yVelocity);
 
-        if (GDV5.KeysPressed[KeyEvent.VK_RIGHT] && collisionDirectionWindow == 0)
+        if (GDV5.KeysPressed[KeyEvent.VK_RIGHT] && collisionDirectionWindow != 2)
         {
             this.movePaddle(xVelocity, yVelocity);
         }
-        if (GDV5.KeysPressed[KeyEvent.VK_LEFT] && collisionDirectionWindow == 0)
+        if (GDV5.KeysPressed[KeyEvent.VK_LEFT] && collisionDirectionWindow != 4)
         {
             this.movePaddle(-xVelocity, yVelocity);
         }
     }
 
-    // Brick Collision Method
-    // Uses Fast Algorithm x + y - 1 in boundary
+    public void setType(int type)
+    {
+        this.type = type;
+        if (type != 1)
+        {
+            xVelocity = (int)(type/1.5) * xVelocityD;
+        }
+        else xVelocity = xVelocityD;
+    }
+
+    public void setColor(Color color)
+    {
+        this.paddleColor = color;
+    }
 }
